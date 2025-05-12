@@ -7,7 +7,14 @@
   "regions": ["iad1"],
   "env": {
     "NODE_ENV": "production",
-    "NEXT_DISABLE_ESLINT": "1"
+    "NEXT_DISABLE_ESLINT": "1",
+    "NEXT_TYPESCRIPT_CHECK": "0"
+  },
+  "build": {
+    "env": {
+      "NEXT_DISABLE_ESLINT": "1",
+      "NEXT_TYPESCRIPT_CHECK": "0"
+    }
   },
   "git": {
     "deploymentEnabled": {

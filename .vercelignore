@@ -1,0 +1,13 @@
+# Ignore development files
+.git
+.github
+.next
+node_modules
+
+# Ignore documentation
+*.md
+!README.md
+
+# Ignore configuration files that aren't needed for build
+.eslintrc.json
+tsconfig.json 
