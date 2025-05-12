@@ -2,102 +2,401 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col">
+      <header className="border-b sticky top-0 z-50 bg-background">
+        <div className="container flex h-16 items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className="text-xl font-bold">TurboScribe Pro</span>
+          </div>
+          <nav className="hidden md:flex items-center gap-6">
+            <a href="/features" className="text-sm font-medium hover:underline">Features</a>
+            <a href="/pricing" className="text-sm font-medium hover:underline">Pricing</a>
+            <a href="/about" className="text-sm font-medium hover:underline">About</a>
+          </nav>
+          <div className="flex items-center gap-4">
+            <a href="/login" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+              Login
+            </a>
+            <a href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2">
+              Sign Up
+            </a>
+          </div>
         </div>
+      </header>
+      
+      <main className="flex-1">
+        {/* Hero Section - Blue Gradient */}
+        <section className="py-20 md:py-24 bg-gradient-to-b from-blue-600 to-blue-500 text-white">
+          <div className="container">
+            <div className="grid md:grid-cols-2 gap-12 items-center">
+              <div>
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight mb-6">
+                  Unlimited audio & <br />
+                  video transcription
+                </h1>
+                <p className="text-xl mb-8 text-blue-100">
+                  Transform your audio and video files into accurate text with our advanced AI transcription service.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4">
+                  <a href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-11 px-8">
+                    Get Started Free
+                  </a>
+                  <a href="/features" className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-white text-white hover:bg-blue-700 h-11 px-8">
+                    See how it works
+                  </a>
+                </div>
+              </div>
+              
+              {/* Feature Comparison Table */}
+              <div className="bg-white p-6 rounded-lg shadow-xl text-gray-800">
+                <div className="border-b pb-3 mb-4">
+                  <h3 className="font-bold text-lg">Why choose TurboScribe</h3>
+                </div>
+                <div className="space-y-3">
+                  <div className="grid grid-cols-3 gap-2 items-center">
+                    <div className="col-span-2 text-sm font-medium">Accuracy</div>
+                    <div className="flex justify-between">
+                      <span className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs">99%</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">85%</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">80%</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 items-center">
+                    <div className="col-span-2 text-sm font-medium">Speaker detection</div>
+                    <div className="flex justify-between">
+                      <span className="text-green-500">✓</span>
+                      <span className="text-green-500">✓</span>
+                      <span className="text-red-500">✗</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 items-center">
+                    <div className="col-span-2 text-sm font-medium">Languages</div>
+                    <div className="flex justify-between">
+                      <span className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs">100+</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">50+</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">20+</span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2 items-center">
+                    <div className="col-span-2 text-sm font-medium">Processing time</div>
+                    <div className="flex justify-between">
+                      <span className="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs">Fast</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">Slow</span>
+                      <span className="px-2 py-1 bg-gray-100 text-gray-600 rounded-full text-xs">Medium</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Try TurboScribe Free Section */}
+        <section className="py-16 bg-white">
+          <div className="container max-w-5xl">
+            <div className="bg-gray-50 rounded-xl shadow-lg overflow-hidden">
+              <div className="grid md:grid-cols-2">
+                <div className="p-8 md:p-10">
+                  <h2 className="text-2xl font-bold mb-2">Try TurboScribe for Free</h2>
+                  <p className="text-gray-600 mb-6">No credit card required</p>
+                  <form className="space-y-4">
+                    <input 
+                      type="email" 
+                      placeholder="Email address" 
+                      className="w-full px-4 py-3 border rounded-md"
+                    />
+                    <input 
+                      type="password" 
+                      placeholder="Password" 
+                      className="w-full px-4 py-3 border rounded-md"
+                    />
+                    <button className="w-full bg-blue-600 text-white py-3 rounded-md font-medium hover:bg-blue-700">
+                      Sign up free
+                    </button>
+                  </form>
+                  <p className="text-xs text-gray-500 mt-4">
+                    By signing up, you agree to our Terms of Service and Privacy Policy
+                  </p>
+                </div>
+                <div className="p-8 md:p-10 bg-gray-100 flex flex-col justify-center">
+                  <div className="mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-medium mb-2">Free account includes:</h3>
+                  <ul className="space-y-2">
+                    <li className="flex items-center">
+                      <svg className="h-4 w-4 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      30 minutes of free transcription
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-4 w-4 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Access to all core features
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-4 w-4 mr-2 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Export to multiple formats
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Welcome to TurboScribe Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container text-center max-w-5xl">
+            <h2 className="text-3xl font-bold mb-3">Welcome to TurboScribe</h2>
+            <p className="text-gray-600 mb-12 max-w-2xl mx-auto">
+              Our AI-powered transcription service converts audio and video to text with industry-leading accuracy
+            </p>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-lg shadow">
+                <div className="w-12 h-12 bg-yellow-100 text-yellow-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold mb-2">Save Time</h3>
+                <p className="text-gray-600 text-sm">
+                  Convert hours of audio to text in minutes, not days
+                </p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow">
+                <div className="w-12 h-12 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </div>
+                <h3 className="font-bold mb-2">High Accuracy</h3>
+                <p className="text-gray-600 text-sm">
+                  Industry-leading 99% accuracy with AI enhancement
+                </p>
+              </div>
+              
+              <div className="bg-white p-6 rounded-lg shadow">
+                <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" />
+                  </svg>
+                </div>
+                <h3 className="font-bold mb-2">Multiple Languages</h3>
+                <p className="text-gray-600 text-sm">
+                  Support for over 100 languages and dialects
+                </p>
+              </div>
+            </div>
+            
+            <div className="mt-12 flex justify-center">
+              <a href="/features" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-11 px-8">
+                Explore all features
+              </a>
+            </div>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <section className="py-20 bg-white">
+          <div className="container">
+            <h2 className="text-3xl font-bold text-center mb-2">Pricing Plans</h2>
+            <p className="text-center text-gray-600 max-w-[600px] mx-auto mb-10">
+              Choose the plan that fits your needs. All plans include our core features.
+            </p>
+            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+              <div className="bg-gray-50 rounded-lg border-2 border-gray-200 shadow-sm overflow-hidden">
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold">Free</h3>
+                  <div className="mt-4 text-4xl font-bold">$0</div>
+                  <p className="mt-1 text-sm text-gray-600">Up to 30 minutes</p>
+                </div>
+                <div className="p-6">
+                  <ul className="space-y-3">
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Basic Transcription
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Standard Export Options
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Speaker Detection
+                    </li>
+                  </ul>
+                  <a href="/signup" className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-10 px-4">
+                    Get Started Free
+                  </a>
+                </div>
+              </div>
+              
+              <div className="bg-blue-600 rounded-lg border-2 border-blue-600 shadow-lg overflow-hidden text-white relative">
+                <div className="absolute top-0 right-0 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1">
+                  BEST VALUE
+                </div>
+                <div className="p-6">
+                  <h3 className="text-2xl font-bold">Pro</h3>
+                  <div className="mt-4 text-4xl font-bold">$10</div>
+                  <p className="mt-1 text-sm text-blue-200">Per month</p>
+                </div>
+                <div className="p-6">
+                  <ul className="space-y-3">
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Unlimited transcription hours
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      99% Enhanced Accuracy
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      All Export Options
+                    </li>
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Priority Processing
+                    </li>
+                  </ul>
+                  <a href="/signup" className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-gray-100 h-10 px-4">
+                    Subscribe Now
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Reviews Section */}
+        <section className="py-16 bg-gray-50">
+          <div className="container">
+            <h2 className="text-3xl font-bold text-center mb-12">Reviews</h2>
+            <div className="grid md:grid-cols-3 gap-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white p-6 rounded-lg shadow">
+                  <div className="flex items-center mb-4">
+                    <div className="h-10 w-10 rounded-full bg-gray-200 mr-3 flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 className="font-bold">Customer Name</h4>
+                      <div className="flex text-yellow-400">
+                        {[...Array(5)].map((_, j) => (
+                          <svg key={j} xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                  <p className="text-gray-600">
+                    "TurboScribe has been a game-changer for our team. The transcription quality is excellent, and it saves us countless hours of manual work. Highly recommended!"
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* FAQ Section */}
+        <section className="py-16 bg-white">
+          <div className="container max-w-4xl">
+            <h2 className="text-3xl font-bold text-center mb-12">FAQ</h2>
+            <div className="grid gap-6">
+              {[
+                {
+                  q: "How accurate is TurboScribe Pro?",
+                  a: "TurboScribe Pro offers industry-leading 99% accuracy for clear audio. Our AI technology continuously improves to handle various accents, technical terminology, and challenging audio conditions."
+                },
+                {
+                  q: "What file formats can I upload?",
+                  a: "We support all common audio and video formats including MP3, WAV, MP4, MOV, WMA, AVI, and more."
+                },
+                {
+                  q: "How long does transcription take?",
+                  a: "Most files are transcribed in minutes. Processing time depends on file length, quality, and current system load. Pro users receive priority processing."
+                }
+              ].map((item, i) => (
+                <div key={i} className="p-6 border rounded-lg">
+                  <h3 className="font-bold text-lg mb-2">{item.q}</h3>
+                  <p className="text-gray-600">{item.a}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+        
+        {/* CTA Section */}
+        <section className="py-10 bg-blue-600 text-white">
+          <div className="container text-center">
+            <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
+            <a href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-11 px-8">
+              Try TurboScribe Pro Free
+            </a>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      
+      <footer className="border-t py-8 md:py-12 bg-gray-900 text-white">
+        <div className="container">
+          <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
+            <div className="flex flex-col gap-2">
+              <span className="text-lg font-bold">TurboScribe Pro</span>
+              <p className="text-sm text-gray-400">
+                AI-powered transcription service
+              </p>
+            </div>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
+              <div className="flex flex-col gap-2">
+                <h3 className="font-medium">Product</h3>
+                <a href="/features" className="text-sm text-gray-400 hover:text-white">Features</a>
+                <a href="/pricing" className="text-sm text-gray-400 hover:text-white">Pricing</a>
+                <a href="/faq" className="text-sm text-gray-400 hover:text-white">FAQ</a>
+              </div>
+              <div className="flex flex-col gap-2">
+                <h3 className="font-medium">Company</h3>
+                <a href="/about" className="text-sm text-gray-400 hover:text-white">About</a>
+                <a href="/contact" className="text-sm text-gray-400 hover:text-white">Contact</a>
+                <a href="/blog" className="text-sm text-gray-400 hover:text-white">Blog</a>
+              </div>
+              <div className="flex flex-col gap-2">
+                <h3 className="font-medium">Legal</h3>
+                <a href="/privacy" className="text-sm text-gray-400 hover:text-white">Privacy</a>
+                <a href="/terms" className="text-sm text-gray-400 hover:text-white">Terms</a>
+              </div>
+            </div>
+          </div>
+          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
+            &copy; {new Date().getFullYear()} TurboScribe Pro. All rights reserved.
+          </div>
+        </div>
       </footer>
     </div>
-  );
+  )
 }

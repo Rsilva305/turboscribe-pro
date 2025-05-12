@@ -1,0 +1,391 @@
+# .windsurfrules for TurboScribe Pro
+
+## 1. Detailed Code Architecture Rules
+
+### 1.1 Clean Architecture Implementation
+- **Separation of Concerns**: Implement strict boundaries between UI components, business logic, and data access layers.
+- **Layered Architecture**: Divide the application into Presentation, Application, Domain, and Infrastructure layers to promote maintainability and scalability.
+
+### 1.2 Domain-Driven Design Principles
+- **Entities**: Model core business objects within the Domain layer.
+- **Value Objects**: Ensure immutability and equality checks for simple business concepts.
+- **Aggregates**: Group entities and value objects with a single root to control data integrity.
+
+### 1.3 Feature-Based Organization
+- Organize code by feature, grouping related components, hooks, and styles together.
+
+### 1.4 Dependency Injection Patterns
+- Use React Context for dependency injection to decouple components from specific implementations.
+
+### 1.5 Interface-First Development
+- Define interfaces for all major components and modules before implementation to ensure consistency and facilitate testing.
+
+### 1.6 Pure Function Implementation
+- Favor pure functions for business logic to improve testability and predictability.
+
+### 1.7 Side Effect Management
+- Use `useEffect` and `useLayoutEffect` judiciously to manage side effects without causing performance bottlenecks.
+
+### 1.8 Unidirectional Data Flow Enforcement
+- Ensure data flows top-down through components, employing state lifting where necessary.
+
+## 2. Comprehensive Naming Conventions
+
+### 2.1 Component Naming Patterns
+- Use **PascalCase** for component names (e.g., `AudioUploader`).
+- Use **camelCase** for component instances and variables.
+
+### 2.2 File Naming Consistency Rules
+- Name files using **kebab-case** (e.g., `audio-uploader.tsx`).
+
+### 2.3 Variable and Function Naming Standards
+- Use descriptive **camelCase** names for variables and functions.
+- Prefix boolean variables with `is` or `has` (e.g., `isLoading`).
+
+### 2.4 Interface and Type Naming Conventions
+- Prefix interfaces with `I` (e.g., `IUser`).
+
+### 2.5 Custom Hook Naming Patterns
+- Prefix with `use` (e.g., `useTranscription`).
+
+### 2.6 Constant and Enum Naming Guidelines
+- Use **UPPER_SNAKE_CASE** for constants.
+- Use **PascalCase** for enum names and members.
+
+### 2.7 CSS Class Naming Using Tailwind Conventions
+- Follow Tailwind CSS utility classes and avoid custom class names unless necessary.
+
+### 2.8 Event Handler Naming Consistency
+- Prefix event handlers with `handle` (e.g., `handleUpload`).
+
+### 2.9 Import Statement Organization Rules
+- Group imports by libraries, utilities, components, and styles.
+
+## 3. Advanced File Structure Organization
+
+### 3.1 Complete Directory Structure Breakdown
+```
+/src
+  /components
+    /FeatureName
+      FeatureComponent.tsx
+      feature-styles.css
+  /hooks
+  /services
+  /utils
+  /pages
+  /styles
+  /context
+  /assets
+  /api
+  /tests
+  /config
+```
+
+### 3.2 Module Organization Strategies
+- Organize modules by features, ensuring each feature is self-contained.
+
+### 3.3 Feature-Module Separation Approach
+- Each feature should have its own directory containing components, hooks, and styles.
+
+### 3.4 Shared Utility Organization
+- Place shared utilities in the `/utils` directory.
+
+### 3.5 Test File Organization
+- Co-locate test files with the components they test, suffixing with `.test.ts`.
+
+### 3.6 Configuration File Placement
+- Place all configuration files within the `/config` directory.
+
+### 3.7 Public Asset Organization
+- Store public assets like images and fonts in `/public/assets`.
+
+### 3.8 API Structure Guidelines
+- Organize API methods within the `/api` directory, grouping related endpoints.
+
+### 3.9 Documentation Organization
+- Maintain comprehensive documentation within a `/docs` directory.
+
+## 4. Sophisticated Component Patterns
+
+### 4.1 Atomic Design Implementation
+- Use atomic design principles to create a hierarchy of components: atoms, molecules, organisms, templates, and pages.
+
+### 4.2 Component Composition Patterns
+- Use composition over inheritance to build complex UI components.
+
+### 4.3 Higher-Order Component Guidelines
+- Limit HOCs to cross-cutting concerns like theming and context provision.
+
+### 4.4 Render Prop Pattern Usage
+- Use render props for complex logic sharing across components.
+
+### 4.5 Custom Hook Integration
+- Extract reusable logic into custom hooks to promote DRY principles.
+
+### 4.6 Component Prop Interface Design
+- Define prop interfaces for components to ensure type safety and clarity.
+
+### 4.7 Compound Component Patterns
+- Use compound components for flexible component APIs (e.g., Tabs, Modal).
+
+### 4.8 Performance Optimization Techniques
+- Use `React.memo` to avoid unnecessary re-renders of components.
+
+### 4.9 Memoization Guidelines
+- Use `useMemo` and `useCallback` for expensive calculations or functions.
+
+### 4.10 Lazy Loading Implementation
+- Implement lazy loading for routes and components using `React.lazy`.
+
+## 5. Specific Guidelines for shadcn Components
+
+### 5.1 Exact Import Syntax for All shadcn Components
+- Use direct imports for better tree-shaking (e.g., `import { Button } from "shadcn/button"`).
+
+### 5.2 Component Customization Approaches
+- Utilize props and className extensions for component customization.
+
+### 5.3 Theme Extension Patterns
+- Extend themes using ShadCN’s theming capabilities.
+
+### 5.4 Custom Variant Creation
+- Create custom variants using ShadCN’s variant API.
+
+### 5.5 Component Composition Strategies
+- Combine ShadCN components with native HTML elements for enhanced flexibility.
+
+### 5.6 Accessibility Enhancement Techniques
+- Ensure all components meet ARIA standards.
+
+### 5.7 Animation Integration
+- Use ShadCN’s animation utilities for smooth UI transitions.
+
+### 5.8 Mobile Responsiveness Implementation
+- Ensure components are responsive by default, leveraging Tailwind CSS.
+
+### 5.9 Dark Mode Support
+- Implement dark mode using Tailwind CSS’s dark mode utilities.
+
+### 5.10 Form Component Integration with React Hook Form
+- Integrate ShadCN form components seamlessly with React Hook Form.
+
+## 6. Comprehensive State Management Patterns
+
+### 6.1 Local State Management Guidelines
+- Use `useState` for simple local state management.
+
+### 6.2 Context API Implementation Patterns
+- Use Context API for global state that doesn’t warrant a full state management library.
+
+### 6.3 React Query State Management Best Practices
+- Use `useQuery` and `useMutation` for fetching and mutating server data.
+
+### 6.4 Form State Handling with React Hook Form
+- Manage form state using React Hook Form’s hooks and validation techniques.
+
+### 6.5 Server State vs. Client State Separation
+- Distinguish between server and client state, managing each appropriately.
+
+### 6.6 State Persistence Strategies
+- Persist critical state using localStorage or sessionStorage where necessary.
+
+### 6.7 State Lifting Patterns
+- Lift state up to the nearest common ancestor when shared between components.
+
+### 6.8 State Initialization Approaches
+- Use default parameters and initializers to set default state values.
+
+### 6.9 Immutability Enforcement
+- Use immutable update patterns or libraries like Immer.
+
+### 6.10 State Synchronization Techniques
+- Synchronize state with server data using React Query’s re-fetching capabilities.
+
+## 7. Advanced API Integration Patterns
+
+### 7.1 Server Actions Implementation for Data Mutations
+- Use Server Actions for handling mutations and side effects on the server.
+
+### 7.2 React Query Implementation Details
+- Configure React Query for caching, refetching, and synchronizing server data.
+
+### 7.3 Custom Hook Creation for API Calls
+- Encapsulate API logic within custom hooks for reuse and separation of concerns.
+
+### 7.4 Error Handling and Retry Logic
+- Implement robust error handling and retry logic using React Query.
+
+### 7.5 Loading State Management
+- Use React Query’s built-in loading state indicators.
+
+### 7.6 Pagination and Infinite Scrolling Implementation
+- Implement pagination and infinite scrolling using React Query.
+
+### 7.7 Optimistic Updates
+- Implement optimistic UI updates with React Query to improve user experience.
+
+### 7.8 Cache Invalidation Strategies
+- Use cache invalidation to ensure data consistency after mutations.
+
+### 7.9 Mutation Handling Approaches
+- Use `useMutation` for handling API data mutations.
+
+### 7.10 API Method Organization
+- Organize API calls by resource within the `/api` directory.
+
+### 7.11 Type Safety Enforcement for API Responses
+- Use TypeScript to enforce type safety on API responses and requests.
+
+## 8. Sophisticated Error Handling Patterns
+
+### 8.1 Global Error Boundary Implementation
+- Implement a top-level error boundary component to catch unhandled errors.
+
+### 8.2 Component-Level Error Handling
+- Use try-catch blocks and error boundaries at the component level for resilience.
+
+### 8.3 Form Validation Error Presentation
+- Display form validation errors using React Hook Form’s error handling.
+
+### 8.4 API Error Processing and Display
+- Handle API errors gracefully and inform users with clear messages.
+
+### 8.5 Error Logging Strategies
+- Log errors to an external service for monitoring and debugging.
+
+### 8.6 Recovery Mechanisms
+- Implement retry strategies and fallbacks for critical operations.
+
+### 8.7 User Feedback Approaches
+- Provide visual feedback for errors using modals or toast notifications.
+
+### 8.8 Graceful Degradation Implementation
+- Ensure the application continues to function in a limited capacity during failures.
+
+### 8.9 Offline Error Handling
+- Implement offline handling using service workers or fallback mechanisms.
+
+### 8.10 Detailed Error Message Guidelines
+- Provide detailed error messages with actionable steps where possible.
+
+## 9. Comprehensive Testing Requirements
+
+### 9.1 Component Testing Approach
+- Use Jest and React Testing Library for component testing, ensuring coverage of all scenarios.
+
+### 9.2 Custom Hook Testing Methodology
+- Test custom hooks using Jest and ensure they handle all edge cases.
+
+### 9.3 Integration Testing Strategy
+- Perform integration tests to verify interactions between components and modules.
+
+### 9.4 End-to-End Testing Guidelines
+- Use Cypress for end-to-end testing, covering critical user flows.
+
+### 9.5 Test Fixture Management
+- Use fixtures to mock data for consistent and repeatable tests.
+
+### 9.6 Mock Implementation
+- Use Jest mocks for dependencies and external services.
+
+### 9.7 Test Coverage Requirements
+- Aim for 90% code coverage across all modules and components.
+
+### 9.8 Performance Testing Approach
+- Include performance tests to benchmark key interactions.
+
+### 9.9 Accessibility Testing Requirements
+- Use tools like aXe to ensure components meet accessibility standards.
+
+### 9.10 Visual Regression Testing Strategy
+- Implement visual regression testing using tools like Chromatic.
+
+## 10. Advanced Performance Optimization Rules
+
+### 10.1 Tree-Shaking Optimization
+- Ensure tree-shaking is enabled to remove unused code during builds.
+
+### 10.2 Bundle Size Monitoring
+- Use tools like Webpack Bundle Analyzer to monitor and optimize bundle size.
+
+### 10.3 Code Splitting Implementation
+- Implement code splitting using dynamic imports in Next.js.
+
+### 10.4 React Memo Usage Guidelines
+- Use `React.memo` to prevent unnecessary renders of pure components.
+
+### 10.5 useCallback and useMemo Implementation Rules
+- Use `useCallback` and `useMemo` to memoize functions and values, respectively.
+
+### 10.6 Virtualization for Large Lists
+- Implement list virtualization using libraries like React Window.
+
+### 10.7 Image Optimization Techniques
+- Use Next.js Image component for automatic image optimization.
+
+### 10.8 Font Loading Strategies
+- Use font-display: swap for non-blocking font loading.
+
+### 10.9 CSS Optimization with Tailwind
+- Purge unused CSS with Tailwind’s purge configuration.
+
+### 10.10 Server-Side Rendering Optimization
+- Optimize SSR using Next.js features and caching strategies.
+
+## 11. Accessibility Compliance Requirements
+
+### 11.1 WCAG 2.1 AA Compliance Rules
+- Ensure the application meets WCAG 2.1 AA standards for accessibility.
+
+### 11.2 Keyboard Navigation Support
+- Ensure all interactive elements are keyboard accessible.
+
+### 11.3 Screen Reader Compatibility
+- Use ARIA roles and properties to enhance screen reader support.
+
+### 11.4 Color Contrast Requirements
+- Ensure text has sufficient contrast against backgrounds.
+
+### 11.5 Focus Management Guidelines
+- Manage focus transitions for modals and dynamic content.
+
+### 11.6 ARIA Attribute Usage Rules
+- Use ARIA attributes sparingly and correctly to enhance semantics.
+
+### 11.7 Semantic HTML Implementation
+- Use semantic HTML elements to improve accessibility and SEO.
+
+### 11.8 Reading Order Optimization
+- Ensure a logical reading order for screen readers and keyboard users.
+
+### 11.9 Proper Heading Structure
+- Use a proper heading hierarchy for content structure.
+
+### 11.10 Skip Navigation Implementation
+- Provide skip navigation links to skip repetitive content.
+
+## 12. Responsive Design Implementation
+
+### 12.1 Mobile-First Development Approach
+- Start with mobile styles and enhance for larger screens.
+
+### 12.2 Breakpoint Usage Guidelines
+- Use Tailwind’s responsive utility classes to handle breakpoints.
+
+### 12.3 Fluid Typography Implementation
+- Implement fluid typography that scales with viewport size.
+
+### 12.4 Responsive Component Design Patterns
+- Design components to be flexible and adapt to different screen sizes.
+
+### 12.5 Container Query Usage
+- Use CSS container queries where supported for more granular control.
+
+### 12.6 Touch Target Sizing Guidelines
+- Ensure touch targets are large enough for comfortable interaction.
+
+### 12.7 Content Prioritization on Smaller Screens
+- Prioritize key content and features for mobile users.
+
+###
