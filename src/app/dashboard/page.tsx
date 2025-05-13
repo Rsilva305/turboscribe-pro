@@ -2,19 +2,107 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { MainLayout } from '@/components/layout/main-layout'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { FaPlus, FaFileAlt, FaHistory } from 'react-icons/fa'
+import { useSupabase } from '@/components/providers/supabase-provider'
+import { toast } from 'sonner'
 
-// Mock data for transcriptions
-const mockTranscriptions = [
-  { id: '1', title: 'Interview with John Doe', date: '2023-05-10', status: 'Completed', duration: '45:22' },
-  { id: '2', title: 'Team Meeting', date: '2023-05-08', status: 'Completed', duration: '32:15' },
-  { id: '3', title: 'Product Presentation', date: '2023-05-05', status: 'Completed', duration: '28:44' },
-]
+// Define the Transcription type
+type Transcription = {
+  id: string;
+  title: string;
+  content: string;
+  created_at: string;
+  file_size: number;
+  file_type: string;
+  duration?: number;
+};
+
+// Helper function to format file size
+function formatFileSize(bytes: number): string {
+  if (bytes < 1024) return bytes + ' B';
+  else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  else return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+// Helper function to format date
+function formatDate(dateString: string): string {
+  return new Date(dateString).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+  });
+}
 
 export default function DashboardPage() {
+  const { session, signOut } = useSupabase();
+  const router = useRouter();
+  const [transcriptions, setTranscriptions] = React.useState<Transcription[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [userProfile, setUserProfile] = React.useState<any>(null);
+  
+  // Redirect to login if not authenticated
+  React.useEffect(() => {
+    if (!session) {
+      router.push('/login');
+    }
+  }, [session, router]);
+  
+  // Fetch user transcriptions and profile
+  React.useEffect(() => {
+    if (session) {
+      const fetchData = async () => {
+        try {
+          setIsLoading(true);
+          
+          // Fetch user profile
+          const { data: profileData, error: profileError } = await fetch('/api/profile')
+            .then(res => res.json());
+          
+          if (profileError) throw new Error(profileError.message);
+          if (profileData) {
+            setUserProfile(profileData);
+          }
+          
+          // Fetch transcriptions
+          const { data: transcriptionsData, error: transcriptionsError } = await fetch('/api/transcriptions')
+            .then(res => res.json());
+          
+          if (transcriptionsError) throw new Error(transcriptionsError.message);
+          if (transcriptionsData) {
+            setTranscriptions(transcriptionsData);
+          }
+          
+        } catch (error) {
+          console.error('Error fetching data:', error);
+          toast.error('Failed to load your data');
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+      fetchData();
+    }
+  }, [session]);
+  
+  // Handle logout
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      toast.error('Failed to log out');
+    }
+  };
+  
+  // Return loading state or login redirect if no session
+  if (!session) {
+    return null; // Will be redirected by the useEffect
+  }
+  
   return (
     <div className="min-h-screen flex flex-col">
       <header className="border-b">
@@ -28,13 +116,13 @@ export default function DashboardPage() {
             <a href="/settings" className="text-sm font-medium hover:underline">Settings</a>
           </nav>
           <div className="flex items-center gap-4">
-            <span className="text-sm">John Doe</span>
-            <a 
-              href="/logout" 
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
+            <span className="text-sm">{session.user.email}</span>
+            <Button 
+              variant="outline"
+              onClick={handleLogout}
             >
               Logout
-            </a>
+            </Button>
           </div>
         </div>
       </header>
@@ -43,12 +131,9 @@ export default function DashboardPage() {
         <div className="container py-10">
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-3xl font-bold">Dashboard</h1>
-            <a 
-              href="/dashboard/new" 
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
-            >
+            <Button onClick={() => router.push('/dashboard/new')}>
               New Transcription
-            </a>
+            </Button>
           </div>
           
           <div className="grid gap-6 md:grid-cols-3 mb-8">
@@ -61,21 +146,23 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <div className="p-6 pt-0">
-                <div className="text-2xl font-bold">{mockTranscriptions.length}</div>
-                <p className="text-xs text-muted-foreground">+2 from last month</p>
+                <div className="text-2xl font-bold">{transcriptions.length}</div>
+                <p className="text-xs text-muted-foreground">Total transcriptions created</p>
               </div>
             </div>
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
               <div className="flex flex-row items-center justify-between p-6 pb-2">
-                <p className="text-sm font-medium">Total Hours</p>
+                <p className="text-sm font-medium">Total Size</p>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4 text-muted-foreground">
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
               </div>
               <div className="p-6 pt-0">
-                <div className="text-2xl font-bold">1.8</div>
-                <p className="text-xs text-muted-foreground">+0.5 from last month</p>
+                <div className="text-2xl font-bold">
+                  {formatFileSize(transcriptions.reduce((total, t) => total + (t.file_size || 0), 0))}
+                </div>
+                <p className="text-xs text-muted-foreground">Total file size processed</p>
               </div>
             </div>
             <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
@@ -86,55 +173,76 @@ export default function DashboardPage() {
                 </svg>
               </div>
               <div className="p-6 pt-0">
-                <div className="text-2xl font-bold">Free</div>
-                <p className="text-xs text-muted-foreground">Upgrade for more features</p>
+                <div className="text-2xl font-bold">{userProfile?.subscription_tier || 'Free'}</div>
+                <p className="text-xs text-muted-foreground">
+                  {userProfile?.subscription_tier === 'free' 
+                    ? '1 transcription per day'
+                    : 'Unlimited transcriptions'}
+                </p>
               </div>
-              <div className="p-6 pt-0">
-                <a href="/pricing" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-full">
-                  Upgrade Plan
-                </a>
-              </div>
+              {userProfile?.subscription_tier === 'free' && (
+                <div className="p-6 pt-0">
+                  <a href="/pricing" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-full">
+                    Upgrade Plan
+                  </a>
+                </div>
+              )}
             </div>
           </div>
           
           <h2 className="text-xl font-semibold mb-4">Recent Transcriptions</h2>
-          <div className="border rounded-lg overflow-hidden">
-            <div className="grid grid-cols-5 font-medium p-4 bg-muted">
-              <div>Title</div>
-              <div>Date</div>
-              <div>Status</div>
-              <div>Duration</div>
-              <div className="text-right">Actions</div>
+          
+          {isLoading ? (
+            <div className="border rounded-lg overflow-hidden p-8 text-center">
+              <p>Loading your transcriptions...</p>
             </div>
-            <div className="divide-y">
-              {mockTranscriptions.map((transcription) => (
-                <div key={transcription.id} className="grid grid-cols-5 p-4 items-center">
-                  <div className="font-medium">{transcription.title}</div>
-                  <div className="text-muted-foreground">{transcription.date}</div>
-                  <div>
-                    <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                      {transcription.status}
-                    </span>
-                  </div>
-                  <div>{transcription.duration}</div>
-                  <div className="flex justify-end gap-2">
-                    <a 
-                      href={`/dashboard/edit/${transcription.id}`} 
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-8 w-16"
-                    >
-                      Edit
-                    </a>
-                    <a 
-                      href={`/dashboard/view/${transcription.id}`} 
-                      className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-8 w-16"
-                    >
-                      View
-                    </a>
-                  </div>
-                </div>
-              ))}
+          ) : transcriptions.length === 0 ? (
+            <div className="border rounded-lg overflow-hidden p-8 text-center">
+              <p className="mb-4">You haven't created any transcriptions yet.</p>
+              <Button onClick={() => router.push('/dashboard/new')}>
+                Create Your First Transcription
+              </Button>
             </div>
-          </div>
+          ) : (
+            <div className="border rounded-lg overflow-hidden">
+              <div className="grid grid-cols-5 font-medium p-4 bg-muted">
+                <div>Title</div>
+                <div>Date</div>
+                <div>Status</div>
+                <div>Size</div>
+                <div className="text-right">Actions</div>
+              </div>
+              <div className="divide-y">
+                {transcriptions.map((transcription) => (
+                  <div key={transcription.id} className="grid grid-cols-5 p-4 items-center">
+                    <div className="font-medium">{transcription.title}</div>
+                    <div className="text-muted-foreground">{formatDate(transcription.created_at)}</div>
+                    <div>
+                      <span className="inline-flex items-center rounded-full bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                        Completed
+                      </span>
+                    </div>
+                    <div>{formatFileSize(transcription.file_size || 0)}</div>
+                    <div className="flex justify-end gap-2">
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => router.push(`/dashboard/edit/${transcription.id}`)}
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        onClick={() => router.push(`/dashboard/view/${transcription.id}`)}
+                      >
+                        View
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </main>
       

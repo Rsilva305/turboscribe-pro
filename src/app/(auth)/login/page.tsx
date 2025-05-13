@@ -2,9 +2,11 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { MainLayout } from '@/components/layout/main-layout'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { useSupabase } from '@/components/providers/supabase-provider'
 
 const loginSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -27,6 +30,10 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>
 
 export default function LoginPage() {
+  const { signIn } = useSupabase();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
+  
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -35,9 +42,26 @@ export default function LoginPage() {
     },
   })
 
-  function onSubmit(values: LoginFormValues) {
-    // In a real app, you would handle authentication here
-    console.log(values)
+  async function onSubmit(values: LoginFormValues) {
+    try {
+      setIsLoading(true);
+      
+      const { data, error } = await signIn(values.email, values.password);
+      
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      
+      toast.success('Logged in successfully!');
+      router.push('/dashboard');
+      router.refresh();
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.');
+      console.error('Login error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -79,7 +103,9 @@ export default function LoginPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Login</Button>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? 'Logging in...' : 'Login'}
+                </Button>
               </form>
             </Form>
           </CardContent>

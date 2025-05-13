@@ -2,9 +2,11 @@
 
 import * as React from 'react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -18,6 +20,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { MainLayout } from '@/components/layout/main-layout'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { useSupabase } from '@/components/providers/supabase-provider'
+import { supabase } from '@/lib/supabase'
 
 const signupSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
@@ -32,6 +36,10 @@ const signupSchema = z.object({
 type SignupFormValues = z.infer<typeof signupSchema>
 
 export default function SignupPage() {
+  const { signUp } = useSupabase();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
+  
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(signupSchema),
     defaultValues: {
@@ -42,9 +50,31 @@ export default function SignupPage() {
     },
   })
 
-  function onSubmit(values: SignupFormValues) {
-    // In a real app, you would handle user registration here
-    console.log(values)
+  async function onSubmit(values: SignupFormValues) {
+    try {
+      setIsLoading(true);
+      
+      const { data, error } = await signUp(values.email, values.password);
+      
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+      
+      // After signup is successful, we'll need to create a user profile
+      if (data) {
+        // When the user is created in Supabase Auth, we'll also create a profile entry
+        // This would normally be done via a Supabase function or server action
+        // For now, we'll just show a toast message
+        toast.success('Account created successfully! Please check your email for verification.');
+        router.push('/login');
+      }
+    } catch (error) {
+      toast.error('An unexpected error occurred. Please try again.');
+      console.error('Signup error:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -112,7 +142,9 @@ export default function SignupPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full">Sign Up</Button>
+                <Button type="submit" className="w-full" disabled={isLoading}>
+                  {isLoading ? 'Creating Account...' : 'Sign Up'}
+                </Button>
               </form>
             </Form>
           </CardContent>
