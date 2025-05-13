@@ -1,11 +1,11 @@
 {
   "/_not-found/page": "/_not-found",
-  "/api/transcribe/route": "/api/transcribe",
   "/api/transcriptions/route": "/api/transcriptions",
+  "/api/transcribe/route": "/api/transcribe",
   "/favicon.ico/route": "/favicon.ico",
-  "/(auth)/login/page": "/login",
   "/(auth)/signup/page": "/signup",
-  "/dashboard/new/page": "/dashboard/new",
+  "/(auth)/login/page": "/login",
   "/dashboard/page": "/dashboard",
+  "/dashboard/new/page": "/dashboard/new",
   "/page": "/"
 }
