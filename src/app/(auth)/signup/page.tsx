@@ -21,7 +21,6 @@ import { Input } from '@/components/ui/input'
 import { MainLayout } from '@/components/layout/main-layout'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { useSupabase } from '@/components/providers/supabase-provider'
-import { supabase } from '@/lib/supabase'
 
 const signupSchema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),

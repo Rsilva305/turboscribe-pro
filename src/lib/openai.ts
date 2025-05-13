@@ -3,11 +3,17 @@ import OpenAI from 'openai';
 // Initialize OpenAI client
 // IMPORTANT: The API key should be set in environment variables, not hardcoded
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY || 'sk-dummy-key-for-development',
 });
 
 export async function transcribeAudio(audioBuffer: Buffer, fileName: string): Promise<string> {
   try {
+    // For development or tests without an API key, return a mock transcription
+    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'sk-dummy-key-for-development') {
+      console.warn('Using mock transcription because no OpenAI API key is provided');
+      return "This is a mock transcription for development purposes.";
+    }
+    
     // Create a File object from the audio buffer
     const file = new File([audioBuffer], fileName, { 
       type: getContentType(fileName)

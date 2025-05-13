@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -9,17 +9,17 @@ export default function Home() {
             <span className="text-xl font-bold">TurboScribe Pro</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/features" className="text-sm font-medium hover:underline">Features</a>
-            <a href="/pricing" className="text-sm font-medium hover:underline">Pricing</a>
-            <a href="/about" className="text-sm font-medium hover:underline">About</a>
+            <Link href="/features" className="text-sm font-medium hover:underline">Features</Link>
+            <Link href="/pricing" className="text-sm font-medium hover:underline">Pricing</Link>
+            <Link href="/about" className="text-sm font-medium hover:underline">About</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <a href="/login" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
+            <Link href="/login" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
               Login
-            </a>
-            <a href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2">
+            </Link>
+            <Link href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-4 py-2">
               Sign Up
-            </a>
+            </Link>
           </div>
         </div>
       </header>
@@ -38,12 +38,12 @@ export default function Home() {
                   Transform your audio and video files into accurate text with our advanced AI transcription service.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4">
-                  <a href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-11 px-8">
+                  <Link href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-11 px-8">
                     Get Started Free
-                  </a>
-                  <a href="/features" className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-white text-white hover:bg-blue-700 h-11 px-8">
+                  </Link>
+                  <Link href="/features" className="inline-flex items-center justify-center rounded-md text-sm font-medium border border-white text-white hover:bg-blue-700 h-11 px-8">
                     See how it works
-                  </a>
+                  </Link>
                 </div>
               </div>
               
@@ -198,9 +198,9 @@ export default function Home() {
             </div>
             
             <div className="mt-12 flex justify-center">
-              <a href="/features" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-11 px-8">
+              <Link href="/features" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-11 px-8">
                 Explore all features
-              </a>
+              </Link>
             </div>
           </div>
         </section>
@@ -240,51 +240,51 @@ export default function Home() {
                       Speaker Detection
                     </li>
                   </ul>
-                  <a href="/signup" className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-10 px-4">
+                  <Link href="/signup" className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-600 text-white hover:bg-blue-700 h-10 px-4">
                     Get Started Free
-                  </a>
+                  </Link>
                 </div>
               </div>
               
               <div className="bg-blue-600 rounded-lg border-2 border-blue-600 shadow-lg overflow-hidden text-white relative">
                 <div className="absolute top-0 right-0 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1">
-                  BEST VALUE
+                  POPULAR
                 </div>
                 <div className="p-6">
                   <h3 className="text-2xl font-bold">Pro</h3>
-                  <div className="mt-4 text-4xl font-bold">$10</div>
-                  <p className="mt-1 text-sm text-blue-200">Per month</p>
+                  <div className="mt-4 text-4xl font-bold">$9.99</div>
+                  <p className="mt-1 text-sm text-blue-200">per month</p>
                 </div>
                 <div className="p-6">
                   <ul className="space-y-3">
                     <li className="flex items-center">
-                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Unlimited transcription hours
+                      Unlimited Transcription
                     </li>
                     <li className="flex items-center">
-                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      99% Enhanced Accuracy
+                      Advanced Export Options
                     </li>
                     <li className="flex items-center">
-                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      All Export Options
-                    </li>
-                    <li className="flex items-center">
-                      <svg className="h-5 w-5 mr-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <svg className="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
                       Priority Processing
                     </li>
+                    <li className="flex items-center">
+                      <svg className="h-5 w-5 mr-2 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Premium Support
+                    </li>
                   </ul>
-                  <a href="/signup" className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-gray-100 h-10 px-4">
-                    Subscribe Now
-                  </a>
+                  <Link href="/signup?plan=pro" className="mt-6 w-full inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-10 px-4">
+                    Get Pro Plan
+                  </Link>
                 </div>
               </div>
             </div>
@@ -316,7 +316,7 @@ export default function Home() {
                     </div>
                   </div>
                   <p className="text-gray-600">
-                    "TurboScribe has been a game-changer for our team. The transcription quality is excellent, and it saves us countless hours of manual work. Highly recommended!"
+                    &quot;TurboScribe has been a game-changer for our team. The transcription quality is excellent, and it saves us countless hours of manual work. Highly recommended!&quot;
                   </p>
                 </div>
               ))}
@@ -356,44 +356,69 @@ export default function Home() {
         <section className="py-10 bg-blue-600 text-white">
           <div className="container text-center">
             <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
-            <a href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-11 px-8">
+            <Link href="/signup" className="inline-flex items-center justify-center rounded-md text-sm font-medium bg-white text-blue-600 hover:bg-blue-50 h-11 px-8">
               Try TurboScribe Pro Free
-            </a>
+            </Link>
           </div>
         </section>
       </main>
       
-      <footer className="border-t py-8 md:py-12 bg-gray-900 text-white">
+      <footer className="border-t py-12 bg-gray-50">
         <div className="container">
-          <div className="flex flex-col md:flex-row justify-between gap-8 mb-8">
-            <div className="flex flex-col gap-2">
-              <span className="text-lg font-bold">TurboScribe Pro</span>
-              <p className="text-sm text-gray-400">
-                AI-powered transcription service
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="font-bold mb-4">TurboScribe Pro</h3>
+              <p className="text-sm text-gray-600 mb-4">
+                AI-powered audio and video transcription service with industry-leading accuracy.
               </p>
+              <div className="flex space-x-4">
+                <a href="#" className="text-gray-400 hover:text-gray-500">
+                  <span className="sr-only">Twitter</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"></path>
+                  </svg>
+                </a>
+                <a href="#" className="text-gray-400 hover:text-gray-500">
+                  <span className="sr-only">LinkedIn</span>
+                  <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"></path>
+                  </svg>
+                </a>
+              </div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
-              <div className="flex flex-col gap-2">
-                <h3 className="font-medium">Product</h3>
-                <a href="/features" className="text-sm text-gray-400 hover:text-white">Features</a>
-                <a href="/pricing" className="text-sm text-gray-400 hover:text-white">Pricing</a>
-                <a href="/faq" className="text-sm text-gray-400 hover:text-white">FAQ</a>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="font-medium">Company</h3>
-                <a href="/about" className="text-sm text-gray-400 hover:text-white">About</a>
-                <a href="/contact" className="text-sm text-gray-400 hover:text-white">Contact</a>
-                <a href="/blog" className="text-sm text-gray-400 hover:text-white">Blog</a>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h3 className="font-medium">Legal</h3>
-                <a href="/privacy" className="text-sm text-gray-400 hover:text-white">Privacy</a>
-                <a href="/terms" className="text-sm text-gray-400 hover:text-white">Terms</a>
-              </div>
+            
+            <div>
+              <h3 className="font-bold mb-4">Product</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/features" className="text-gray-600 hover:text-gray-900">Features</Link></li>
+                <li><Link href="/pricing" className="text-gray-600 hover:text-gray-900">Pricing</Link></li>
+                <li><Link href="/testimonials" className="text-gray-600 hover:text-gray-900">Testimonials</Link></li>
+                <li><Link href="/faq" className="text-gray-600 hover:text-gray-900">FAQ</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-bold mb-4">Company</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/about" className="text-gray-600 hover:text-gray-900">About Us</Link></li>
+                <li><Link href="/blog" className="text-gray-600 hover:text-gray-900">Blog</Link></li>
+                <li><Link href="/careers" className="text-gray-600 hover:text-gray-900">Careers</Link></li>
+                <li><Link href="/contact" className="text-gray-600 hover:text-gray-900">Contact</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-bold mb-4">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                <li><Link href="/privacy" className="text-gray-600 hover:text-gray-900">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="text-gray-600 hover:text-gray-900">Terms of Service</Link></li>
+                <li><Link href="/cookies" className="text-gray-600 hover:text-gray-900">Cookie Policy</Link></li>
+              </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-400">
-            &copy; {new Date().getFullYear()} TurboScribe Pro. All rights reserved.
+          
+          <div className="border-t mt-12 pt-8 text-center text-sm text-gray-500">
+            <p>&copy; {new Date().getFullYear()} TurboScribe Pro. All rights reserved.</p>
           </div>
         </div>
       </footer>

@@ -46,7 +46,7 @@ export default function LoginPage() {
     try {
       setIsLoading(true);
       
-      const { data, error } = await signIn(values.email, values.password);
+      const { error } = await signIn(values.email, values.password);
       
       if (error) {
         toast.error(error.message);
