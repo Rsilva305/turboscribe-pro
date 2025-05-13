@@ -1,179 +1,149 @@
 'use client'
 
-import { useState } from 'react'
+import * as React from 'react'
+import { useRouter } from 'next/navigation'
+import { MainLayout } from '@/components/layout/main-layout'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { toast } from 'sonner'
+import { useSupabase } from '@/components/providers/supabase-provider'
 
 export default function NewTranscriptionPage() {
-  const [file, setFile] = useState<File | null>(null)
-  const [uploading, setUploading] = useState(false)
-  const [uploadProgress, setUploadProgress] = useState(0)
-  
+  const { session } = useSupabase();
+  const router = useRouter();
+  const [file, setFile] = React.useState<File | null>(null);
+  const [isUploading, setIsUploading] = React.useState(false);
+  const [transcription, setTranscription] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (!session) {
+      router.push('/login');
+    }
+  }, [session, router]);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFile(e.target.files[0])
+      setFile(e.target.files[0]);
     }
-  }
-  
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
+  };
+
+  const handleUpload = async (e: React.FormEvent) => {
+    e.preventDefault();
     
-    if (!file) return
+    if (!file) {
+      toast.error('Please select a file to transcribe');
+      return;
+    }
+
+    // Check file size (limit to 25MB for example)
+    if (file.size > 25 * 1024 * 1024) {
+      toast.error('File size exceeds the limit (25MB)');
+      return;
+    }
+
+    // Check file type
+    const supportedTypes = [
+      'audio/mpeg', 'audio/mp4', 'audio/wav', 'audio/ogg', 'audio/flac',
+      'video/mp4', 'video/quicktime', 'video/mpeg', 'video/webm', 'video/ogg'
+    ];
     
-    setUploading(true)
-    
-    // Simulate upload progress
-    const interval = setInterval(() => {
-      setUploadProgress((prev) => {
-        if (prev >= 95) {
-          clearInterval(interval)
-          return prev
-        }
-        return prev + 5
-      })
-    }, 300)
-    
-    // Simulate API call
-    setTimeout(() => {
-      clearInterval(interval)
-      setUploadProgress(100)
-      // In a real app, you would handle the response and redirect
-      setTimeout(() => {
-        window.location.href = '/dashboard'
-      }, 1000)
-    }, 3000)
-  }
-  
+    if (!supportedTypes.includes(file.type)) {
+      toast.error('Unsupported file type. Please upload an audio or video file.');
+      return;
+    }
+
+    try {
+      setIsUploading(true);
+      setTranscription(null);
+      
+      // Create form data
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      // Send file to API endpoint for transcription
+      const response = await fetch('/api/transcribe', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      const data = await response.json();
+      
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to transcribe file');
+      }
+      
+      // Set the transcription result
+      setTranscription(data.transcription);
+      toast.success('Transcription completed successfully!');
+      
+    } catch (error) {
+      console.error('Upload error:', error);
+      toast.error('Failed to transcribe file. Please try again.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b">
-        <div className="container flex h-16 items-center justify-between">
-          <div className="flex items-center gap-2">
-            <a href="/" className="text-xl font-bold">TurboScribe Pro</a>
-          </div>
-          <nav className="hidden md:flex items-center gap-6">
-            <a href="/dashboard" className="text-sm font-medium hover:underline">Dashboard</a>
-            <a href="/dashboard/new" className="text-sm font-medium hover:underline">New Transcription</a>
-            <a href="/settings" className="text-sm font-medium hover:underline">Settings</a>
-          </nav>
-          <div className="flex items-center gap-4">
-            <span className="text-sm">John Doe</span>
-            <a 
-              href="/logout" 
-              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2"
-            >
-              Logout
-            </a>
-          </div>
+    <MainLayout>
+      <div className="container py-10">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-bold">New Transcription</h1>
+          <Button onClick={() => router.push('/dashboard')} variant="outline">
+            Back to Dashboard
+          </Button>
         </div>
-      </header>
-      
-      <main className="flex-1">
-        <div className="container py-10">
-          <div className="flex items-center mb-8">
-            <a 
-              href="/dashboard" 
-              className="mr-4 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-9 p-0"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                <path d="m15 18-6-6 6-6"></path>
-              </svg>
-            </a>
-            <h1 className="text-3xl font-bold">New Transcription</h1>
-          </div>
+        
+        <Card className="max-w-2xl mx-auto">
+          <CardHeader>
+            <CardTitle>Upload Audio or Video</CardTitle>
+            <CardDescription>
+              Supported formats: MP3, M4A, MP4, WAV, OGG, FLAC, WEBM, and more
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleUpload} className="space-y-6">
+              <div className="flex flex-col gap-3">
+                <label htmlFor="file" className="text-sm font-medium">
+                  File
+                </label>
+                <Input
+                  id="file"
+                  type="file"
+                  accept="audio/*,video/*"
+                  onChange={handleFileChange}
+                  disabled={isUploading}
+                />
+                <div className="text-xs text-muted-foreground">
+                  Maximum file size: 25MB
+                </div>
+              </div>
+              
+              <Button type="submit" className="w-full" disabled={!file || isUploading}>
+                {isUploading ? 'Transcribing...' : 'Transcribe'}
+              </Button>
+            </form>
+          </CardContent>
           
-          <div className="max-w-2xl mx-auto">
-            <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
-              <div className="flex flex-col space-y-1.5 p-6">
-                <h3 className="text-2xl font-semibold leading-none tracking-tight">Upload Audio File</h3>
-                <p className="text-sm text-muted-foreground">
-                  Upload an audio or video file to transcribe. Supported formats: MP3, WAV, MP4, M4A.
-                </p>
+          {transcription && (
+            <CardFooter className="flex flex-col">
+              <h3 className="font-medium mb-2">Transcription Result:</h3>
+              <div className="p-4 border rounded-md w-full bg-muted whitespace-pre-wrap">
+                {transcription}
               </div>
-              <div className="p-6">
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="title">
-                      Title
-                    </label>
-                    <input 
-                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-                      id="title" 
-                      placeholder="Enter a title for your transcription" 
-                      required 
-                    />
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="file">
-                      Audio File
-                    </label>
-                    <div className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:bg-muted/50 transition-colors">
-                      <input
-                        id="file"
-                        type="file"
-                        className="hidden"
-                        accept=".mp3,.wav,.mp4,.m4a"
-                        onChange={handleFileChange}
-                        required
-                      />
-                      <label htmlFor="file" className="cursor-pointer flex flex-col items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-8 w-8 text-muted-foreground">
-                          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                          <polyline points="17 8 12 3 7 8"></polyline>
-                          <line x1="12" x2="12" y1="3" y2="15"></line>
-                        </svg>
-                        <span className="font-medium">
-                          {file ? file.name : 'Click to upload or drag and drop'}
-                        </span>
-                        <span className="text-xs text-muted-foreground">
-                          MP3, WAV, MP4, M4A up to 500MB
-                        </span>
-                      </label>
-                    </div>
-                  </div>
-                  
-                  {uploading && (
-                    <div className="space-y-2">
-                      <div className="text-sm text-muted-foreground">
-                        Uploading... {uploadProgress}%
-                      </div>
-                      <div className="w-full bg-muted rounded-full h-2">
-                        <div 
-                          className="bg-primary h-2 rounded-full transition-all" 
-                          style={{ width: `${uploadProgress}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  
-                  <button 
-                    type="submit" 
-                    className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
-                    disabled={!file || uploading}
-                  >
-                    {uploading ? 'Uploading...' : 'Upload and Transcribe'}
-                  </button>
-                </form>
+              <div className="flex gap-2 mt-4 self-end">
+                <Button variant="outline" onClick={() => navigator.clipboard.writeText(transcription)}>
+                  Copy
+                </Button>
+                <Button onClick={() => setTranscription(null)}>
+                  New Transcription
+                </Button>
               </div>
-              <div className="flex items-center justify-between p-6 border-t">
-                <p className="text-sm text-muted-foreground">
-                  Free plan: 10 minutes of audio per month
-                </p>
-                <a href="/pricing" className="text-sm text-primary hover:underline">
-                  Upgrade for more
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </main>
-      
-      <footer className="border-t py-8">
-        <div className="container">
-          <div className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} TurboScribe Pro. All rights reserved.
-          </div>
-        </div>
-      </footer>
-    </div>
-  )
+            </CardFooter>
+          )}
+        </Card>
+      </div>
+    </MainLayout>
+  );
 } 
