@@ -3,10 +3,7 @@
 import * as React from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { MainLayout } from '@/components/layout/main-layout'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
-import { FaPlus, FaFileAlt, FaHistory } from 'react-icons/fa'
 import { useSupabase } from '@/components/providers/supabase-provider'
 import { toast } from 'sonner'
 
@@ -19,6 +16,15 @@ type Transcription = {
   file_size: number;
   file_type: string;
   duration?: number;
+};
+
+// Define the UserProfile type
+type UserProfile = {
+  id: string;
+  email: string;
+  subscription_tier: string;
+  subscription_start_date?: string;
+  subscription_end_date?: string;
 };
 
 // Helper function to format file size
@@ -42,7 +48,7 @@ export default function DashboardPage() {
   const router = useRouter();
   const [transcriptions, setTranscriptions] = React.useState<Transcription[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
-  const [userProfile, setUserProfile] = React.useState<any>(null);
+  const [userProfile, setUserProfile] = React.useState<UserProfile | null>(null);
   
   // Redirect to login if not authenticated
   React.useEffect(() => {
@@ -59,25 +65,24 @@ export default function DashboardPage() {
           setIsLoading(true);
           
           // Fetch user profile
-          const { data: profileData, error: profileError } = await fetch('/api/profile')
-            .then(res => res.json());
+          const profileResponse = await fetch('/api/profile');
+          const profileData = await profileResponse.json();
           
-          if (profileError) throw new Error(profileError.message);
-          if (profileData) {
-            setUserProfile(profileData);
+          if (profileData.error) throw new Error(profileData.error.message);
+          if (profileData.data) {
+            setUserProfile(profileData.data);
           }
           
           // Fetch transcriptions
-          const { data: transcriptionsData, error: transcriptionsError } = await fetch('/api/transcriptions')
-            .then(res => res.json());
+          const transcriptionsResponse = await fetch('/api/transcriptions');
+          const transcriptionsData = await transcriptionsResponse.json();
           
-          if (transcriptionsError) throw new Error(transcriptionsError.message);
-          if (transcriptionsData) {
-            setTranscriptions(transcriptionsData);
+          if (transcriptionsData.error) throw new Error(transcriptionsData.error.message);
+          if (transcriptionsData.data) {
+            setTranscriptions(transcriptionsData.data);
           }
           
-        } catch (error) {
-          console.error('Error fetching data:', error);
+        } catch {
           toast.error('Failed to load your data');
         } finally {
           setIsLoading(false);
@@ -93,7 +98,7 @@ export default function DashboardPage() {
     try {
       await signOut();
       router.push('/login');
-    } catch (error) {
+    } catch {
       toast.error('Failed to log out');
     }
   };
@@ -108,12 +113,12 @@ export default function DashboardPage() {
       <header className="border-b">
         <div className="container flex h-16 items-center justify-between">
           <div className="flex items-center gap-2">
-            <a href="/" className="text-xl font-bold">TurboScribe Pro</a>
+            <Link href="/" className="text-xl font-bold">TurboScribe Pro</Link>
           </div>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="/dashboard" className="text-sm font-medium hover:underline">Dashboard</a>
-            <a href="/dashboard/new" className="text-sm font-medium hover:underline">New Transcription</a>
-            <a href="/settings" className="text-sm font-medium hover:underline">Settings</a>
+            <Link href="/dashboard" className="text-sm font-medium hover:underline">Dashboard</Link>
+            <Link href="/dashboard/new" className="text-sm font-medium hover:underline">New Transcription</Link>
+            <Link href="/settings" className="text-sm font-medium hover:underline">Settings</Link>
           </nav>
           <div className="flex items-center gap-4">
             <span className="text-sm">{session.user.email}</span>
@@ -182,9 +187,9 @@ export default function DashboardPage() {
               </div>
               {userProfile?.subscription_tier === 'free' && (
                 <div className="p-6 pt-0">
-                  <a href="/pricing" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-full">
+                  <Link href="/pricing" className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 w-full">
                     Upgrade Plan
-                  </a>
+                  </Link>
                 </div>
               )}
             </div>
@@ -198,7 +203,7 @@ export default function DashboardPage() {
             </div>
           ) : transcriptions.length === 0 ? (
             <div className="border rounded-lg overflow-hidden p-8 text-center">
-              <p className="mb-4">You haven't created any transcriptions yet.</p>
+              <p className="mb-4">You haven&apos;t created any transcriptions yet.</p>
               <Button onClick={() => router.push('/dashboard/new')}>
                 Create Your First Transcription
               </Button>
@@ -248,9 +253,9 @@ export default function DashboardPage() {
       
       <footer className="border-t py-8">
         <div className="container">
-          <div className="text-center text-sm text-muted-foreground">
-            &copy; {new Date().getFullYear()} TurboScribe Pro. All rights reserved.
-          </div>
+          <p className="text-center text-muted-foreground text-sm">
+            © {new Date().getFullYear()} TurboScribe Pro. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>

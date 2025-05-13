@@ -1,16 +1,16 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState } from 'react';
-import { Session } from '@supabase/supabase-js';
+import { Session, AuthResponse, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@/lib/supabase';
 
 // Define the context types
 type SupabaseContextType = {
   session: Session | null;
   isLoading: boolean;
-  signUp: (email: string, password: string) => Promise<any>;
-  signIn: (email: string, password: string) => Promise<any>;
-  signOut: () => Promise<any>;
+  signUp: (email: string, password: string) => Promise<AuthResponse>;
+  signIn: (email: string, password: string) => Promise<AuthResponse>;
+  signOut: () => Promise<{ error: AuthError | null }>;
 };
 
 // Create the context
@@ -24,7 +24,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Get the initial session
     const getSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const { data: { session } } = await supabase.auth.getSession();
       setSession(session);
       setIsLoading(false);
       
